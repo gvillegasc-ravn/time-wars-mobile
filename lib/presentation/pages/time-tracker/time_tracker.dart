@@ -1,23 +1,83 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:timestart/domain/models/time_entries.dart';
 
 class TimeTracker extends StatefulWidget {
-  const TimeTracker({super.key});
+  const TimeTracker({
+    super.key,
+    this.timeEntry,
+  });
+
+  final TimeEntry? timeEntry;
 
   @override
   State<TimeTracker> createState() => _TimeTrackerState();
 }
 
 class _TimeTrackerState extends State<TimeTracker> {
-  var _isRunning = true;
+  var _isRunning = false;
+  late int _seconds;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _isRunning = widget.timeEntry != null;
+    _seconds = _isRunning
+        ? DateTime.now()
+            .toUtc()
+            .difference(widget.timeEntry!.startTime)
+            .inSeconds
+        : 0;
+
+    if (_isRunning) {
+      _startTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   void _startStopTimer() {
     if (_isRunning) {
+      _showMyDialog();
+
+      // setState(() {
+      //   _isRunning = !_isRunning;
+      // });
+    } else {
+      _startTimer();
       setState(() {
         _isRunning = !_isRunning;
       });
+    }
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+      });
+    });
+  }
+
+  String formatTime(int seconds) {
+    int hours = seconds ~/ 3600;
+    int minutes = (seconds % 3600) ~/ 60;
+    int remainingSeconds = seconds % 60;
+    return '${_twoDigits(hours)}:${_twoDigits(minutes)}:${_twoDigits(remainingSeconds)}';
+  }
+
+  String _twoDigits(int number) {
+    if (number < 10) {
+      return '0$number';
     } else {
-      _showMyDialog();
+      return '$number';
     }
   }
 
@@ -36,7 +96,14 @@ class _TimeTrackerState extends State<TimeTracker> {
           "USA",
           "India"
         ];
-        var seen = Set<String>();
+
+        List<String> workTypes = [
+          "Refactor",
+          "Fix",
+          "Feature",
+          "Chore",
+        ];
+        final seen = Set<String>();
         List<String> uniquelist =
             countries.where((country) => seen.add(country)).toList();
 
@@ -107,30 +174,68 @@ class _TimeTrackerState extends State<TimeTracker> {
                 ContainerBorder(
                   child: Column(
                     children: [
-                      const TimeEntrySection(
-                        name: 'Client',
+                      TimeEntrySection(
+                        name: 'Client*',
                         child: ContainerBorder(
                           horizontalPadding: 5,
                           verticalPadding: 6,
-                          child: Row(
-                            children: [
-                              Text('11/29/2024'),
-                              SizedBox(width: 30),
-                              Icon(
-                                CupertinoIcons.calendar,
-                                size: 20,
-                              )
-                            ],
+                          child: SizedBox(
+                            height: 20,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                focusColor: Colors.transparent,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                value: uniquelist[0],
+                                items: uniquelist.map((country) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      country,
+                                    ),
+                                    value: country,
+                                  );
+                                }).toList(),
+                                onChanged: (country) {
+                                  print("You selected: $country");
+                                },
+                              ),
+                            ),
                           ),
+                          // child: Text('Refactor'),
                         ),
                       ),
                       const CustomDivider(),
-                      const TimeEntrySection(
-                        name: 'Project',
+                      TimeEntrySection(
+                        name: 'Project*',
                         child: ContainerBorder(
                           horizontalPadding: 5,
                           verticalPadding: 6,
-                          child: Text('22:51'),
+                          child: SizedBox(
+                            height: 20,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                focusColor: Colors.transparent,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                value: uniquelist[0],
+                                items: uniquelist.map((country) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      country,
+                                    ),
+                                    value: country,
+                                  );
+                                }).toList(),
+                                onChanged: (country) {
+                                  print("You selected: $country");
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       const CustomDivider(),
@@ -156,31 +261,35 @@ class _TimeTrackerState extends State<TimeTracker> {
                         child: ContainerBorder(
                           horizontalPadding: 5,
                           verticalPadding: 6,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
+                          child: SizedBox(
+                            height: 20,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                focusColor: Colors.transparent,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                value: workTypes[0],
+                                items: workTypes.map((workType) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      workType,
+                                    ),
+                                    value: workType,
+                                  );
+                                }).toList(),
+                                onChanged: (workType) {
+                                  print("You selected: $workType");
+                                },
                               ),
-                              value: uniquelist[0],
-                              items: uniquelist.map((country) {
-                                return DropdownMenuItem(
-                                  child: Text(
-                                    country,
-                                  ),
-                                  value: country,
-                                );
-                              }).toList(),
-                              onChanged: (country) {
-                                print("You selected: $country");
-                              },
                             ),
                           ),
                           // child: Text('Refactor'),
                         ),
                       ),
                       const TimeEntrySection(
-                        name: 'Description',
+                        name: 'Description* ',
                         child: ContainerBorder(
                           horizontalPadding: 5,
                           verticalPadding: 6,
@@ -225,11 +334,6 @@ class _TimeTrackerState extends State<TimeTracker> {
         );
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -279,9 +383,9 @@ class _TimeTrackerState extends State<TimeTracker> {
                 const Spacer(),
                 Row(
                   children: [
-                    const Text(
-                      '00:00:00',
-                      style: TextStyle(
+                    Text(
+                      formatTime(_seconds),
+                      style: const TextStyle(
                         fontSize: 20,
                       ),
                     ),
