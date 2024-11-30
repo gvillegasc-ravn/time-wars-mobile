@@ -117,235 +117,241 @@ class _TimeTrackerState extends State<TimeTracker> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: 450,
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Time entry',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ContainerBorder(
-                  child: Column(
-                    children: [
-                      TimeEntrySection(
-                        name: 'Date',
-                        child: ContainerBorder(
-                          horizontalPadding: 5,
-                          verticalPadding: 5,
-                          child: DatePickerTime(
-                            initialDate: selectedDate,
-                            onDateSelected: (DateTime date) {
-                              setState(() {
-                                selectedDate = date;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      const CustomDivider(),
-                      TimeEntrySection(
-                        name: 'Time',
-                        child: Row(
-                          children: [
-                            ContainerBorder(
-                              horizontalPadding: 5,
-                              verticalPadding: 6,
-                              child: TimePicker(
-                                initialTime:
-                                    const TimeOfDay(hour: 22, minute: 51),
-                                onTimeSelected: (TimeOfDay newTime) {},
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            const Text('-'),
-                            const SizedBox(width: 10),
-                            ContainerBorder(
-                              horizontalPadding: 5,
-                              verticalPadding: 6,
-                              child: TimePicker(
-                                initialTime:
-                                    const TimeOfDay(hour: 22, minute: 51),
-                                onTimeSelected: (TimeOfDay newTime) {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ContainerBorder(
-                  child: Column(
-                    children: [
-                      TimeEntrySection(
-                        name: 'Client*',
-                        child: ContainerBorder(
-                          horizontalPadding: 5,
-                          verticalPadding: 6,
-                          child: SizedBox(
-                            height: 20,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                focusColor: Colors.transparent,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                value: clientSelected,
-                                items: clients.map((client) {
-                                  return DropdownMenuItem(
-                                    value: client,
-                                    child: Text(client),
-                                  );
-                                }).toList(),
-                                onChanged: (client) {
-                                  setState(() {
-                                    clientSelected = client;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          // child: Text('Refactor'),
-                        ),
-                      ),
-                      const CustomDivider(),
-                      TimeEntrySection(
-                        name: 'Project*',
-                        child: ContainerBorder(
-                          horizontalPadding: 5,
-                          verticalPadding: 6,
-                          child: SizedBox(
-                            height: 20,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                focusColor: Colors.transparent,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                value: projectSelected,
-                                items: projects.map((project) {
-                                  return DropdownMenuItem(
-                                    value: project,
-                                    child: Text(
-                                      project,
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (project) {
-                                  setState(() {
-                                    projectSelected = project;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const CustomDivider(),
-                      const TimeEntrySection(
-                        name: 'Ticket Number',
-                        child: ContainerBorder(
-                          child: SizedBox(
-                            width: 100,
-                            child: TextField(
-                              style: TextStyle(fontSize: 14),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true, // Added this
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const CustomDivider(),
-                      TimeEntrySection(
-                        name: 'Work Type',
-                        child: ContainerBorder(
-                          horizontalPadding: 5,
-                          verticalPadding: 6,
-                          child: SizedBox(
-                            height: 20,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                focusColor: Colors.transparent,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                value: workTypeSelected,
-                                items: workTypes.map((workType) {
-                                  return DropdownMenuItem(
-                                    value: workType,
-                                    child: Text(
-                                      workType,
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (workType) {
-                                  setState(() {
-                                    workTypeSelected = workType;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          // child: Text('Refactor'),
-                        ),
-                      ),
-                      const TimeEntrySection(
-                        name: 'Description* ',
-                        child: ContainerBorder(
-                          horizontalPadding: 5,
-                          verticalPadding: 6,
-                          child: SizedBox(
-                            width: 280,
-                            height: 120,
-                            child: TextField(
-                              style: TextStyle(fontSize: 14),
-                              maxLines: null,
-                              expands: true,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true, // Added this
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    MaterialButton(
-                      child: const Text('Cancel'),
-                      onPressed: () => Navigator.pop(context),
+          content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              width: 450,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Time entry',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
-                    const SizedBox(width: 10),
-                    MaterialButton(
-                      child: const Text('Save'),
-                      onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(height: 10),
+                  ContainerBorder(
+                    child: Column(
+                      children: [
+                        TimeEntrySection(
+                          name: 'Date',
+                          child: ContainerBorder(
+                            horizontalPadding: 5,
+                            verticalPadding: 5,
+                            child: DatePickerTime(
+                              initialDate: selectedDate,
+                              onDateSelected: (DateTime date) {
+                                setState(() {
+                                  selectedDate = date;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        TimeEntrySection(
+                          name: 'Time',
+                          child: Row(
+                            children: [
+                              ContainerBorder(
+                                horizontalPadding: 5,
+                                verticalPadding: 6,
+                                child: TimePicker(
+                                  initialTime:
+                                      const TimeOfDay(hour: 22, minute: 51),
+                                  onTimeSelected: (TimeOfDay newTime) {},
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text('-'),
+                              const SizedBox(width: 10),
+                              ContainerBorder(
+                                horizontalPadding: 5,
+                                verticalPadding: 6,
+                                child: TimePicker(
+                                  initialTime:
+                                      const TimeOfDay(hour: 22, minute: 51),
+                                  onTimeSelected: (TimeOfDay newTime) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                )
-              ],
-            ),
-          ),
+                  ),
+                  const SizedBox(height: 10),
+                  ContainerBorder(
+                    child: Column(
+                      children: [
+                        TimeEntrySection(
+                          name: 'Client*',
+                          child: ContainerBorder(
+                            horizontalPadding: 5,
+                            verticalPadding: 6,
+                            child: SizedBox(
+                              height: 20,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  focusColor: Colors.transparent,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  hint: const Text('Select'),
+                                  value: clientSelected,
+                                  items: clients.map((client) {
+                                    return DropdownMenuItem(
+                                      value: client,
+                                      child: Text(client),
+                                    );
+                                  }).toList(),
+                                  onChanged: (client) {
+                                    setState(() {
+                                      clientSelected = client;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            // child: Text('Refactor'),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        TimeEntrySection(
+                          name: 'Project*',
+                          child: ContainerBorder(
+                            horizontalPadding: 5,
+                            verticalPadding: 6,
+                            child: SizedBox(
+                              height: 20,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  focusColor: Colors.transparent,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  hint: const Text('Select'),
+                                  value: projectSelected,
+                                  items: projects.map((project) {
+                                    return DropdownMenuItem(
+                                      value: project,
+                                      child: Text(
+                                        project,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (project) {
+                                    setState(() {
+                                      projectSelected = project;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        const TimeEntrySection(
+                          name: 'Ticket Number',
+                          child: ContainerBorder(
+                            child: SizedBox(
+                              width: 100,
+                              child: TextField(
+                                style: TextStyle(fontSize: 14),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  isDense: true, // Added this
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const CustomDivider(),
+                        TimeEntrySection(
+                          name: 'Work Type',
+                          child: ContainerBorder(
+                            horizontalPadding: 5,
+                            verticalPadding: 6,
+                            child: SizedBox(
+                              height: 20,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  focusColor: Colors.transparent,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  hint: const Text('Select'),
+                                  value: workTypeSelected,
+                                  items: workTypes.map((workType) {
+                                    return DropdownMenuItem(
+                                      value: workType,
+                                      child: Text(
+                                        workType,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (workType) {
+                                    setState(() {
+                                      workTypeSelected = workType;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            // child: Text('Refactor'),
+                          ),
+                        ),
+                        const TimeEntrySection(
+                          name: 'Description* ',
+                          child: ContainerBorder(
+                            horizontalPadding: 5,
+                            verticalPadding: 6,
+                            child: SizedBox(
+                              width: 280,
+                              height: 120,
+                              child: TextField(
+                                style: TextStyle(fontSize: 14),
+                                maxLines: null,
+                                expands: true,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  isDense: true, // Added this
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      MaterialButton(
+                        child: const Text('Cancel'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      const SizedBox(width: 10),
+                      MaterialButton(
+                        child: const Text('Save'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          }),
         );
       },
     );
