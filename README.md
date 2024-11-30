@@ -1,16 +1,41 @@
-# timestart
+# Time Wars Movile
 
-A new Flutter project.
+This a flutter project focused on tracking workers' hours, where they indicate a start date, an end date, a description of the task, and the information to the respective client
 
-## Getting Started
+## Setup and Running
 
-This project is a starting point for a Flutter application.
+### Pre-requisites
 
-A few resources to get you started if this is your first Flutter project:
+For run this application you must install [Flutter](https://flutter.dev/) 3.19 or higher.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+You can know how to install flutter [here](https://flutter.dev/docs/get-started/install)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### XCode
+
+For run the project is necessary install [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12/) because this project is intended to run on a Mac.
+
+```bash
+# move to the app project
+cd time-wars-mobile
+```
+
+Next download the `flutter` dependencies with:
+
+````bash
+# get dependencies
+flutter pub get
+```.
+````
+
+### Usage
+
+Next to download dependencies you have to have turn on a mac emulator on and execute the following command.
+
+```bash
+# run in the simulator
+flutter run
+```
+
+## Builded with
+
+- [Flutter](https://flutter.dev/) - SDK for develop
