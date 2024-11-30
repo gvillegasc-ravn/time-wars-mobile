@@ -1,8 +1,8 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timestart/domain/models/time_entries.dart';
+import 'package:timestart/presentation/pages/time-tracker/widgets/date_picket.dart';
+import 'package:timestart/presentation/pages/time-tracker/widgets/time_picker.dart';
 
 class TimeTracker extends StatefulWidget {
   const TimeTracker({
@@ -20,6 +20,8 @@ class _TimeTrackerState extends State<TimeTracker> {
   var _isRunning = false;
   late int _seconds;
   late Timer _timer;
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -126,7 +128,7 @@ class _TimeTrackerState extends State<TimeTracker> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const ContainerBorder(
+                ContainerBorder(
                   child: Column(
                     children: [
                       TimeEntrySection(
@@ -134,19 +136,17 @@ class _TimeTrackerState extends State<TimeTracker> {
                         child: ContainerBorder(
                           horizontalPadding: 5,
                           verticalPadding: 5,
-                          child: Row(
-                            children: [
-                              Text('11/29/2024'),
-                              SizedBox(width: 30),
-                              Icon(
-                                CupertinoIcons.calendar,
-                                size: 20,
-                              )
-                            ],
+                          child: DatePickerTime(
+                            initialDate: selectedDate,
+                            onDateSelected: (DateTime date) {
+                              setState(() {
+                                selectedDate = date;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      CustomDivider(),
+                      const CustomDivider(),
                       TimeEntrySection(
                         name: 'Time',
                         child: Row(
@@ -154,15 +154,23 @@ class _TimeTrackerState extends State<TimeTracker> {
                             ContainerBorder(
                               horizontalPadding: 5,
                               verticalPadding: 6,
-                              child: Text('22:51'),
+                              child: TimePicker(
+                                initialTime:
+                                    const TimeOfDay(hour: 22, minute: 51),
+                                onTimeSelected: (TimeOfDay newTime) {},
+                              ),
                             ),
-                            SizedBox(width: 10),
-                            Text('-'),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
+                            const Text('-'),
+                            const SizedBox(width: 10),
                             ContainerBorder(
                               horizontalPadding: 5,
                               verticalPadding: 6,
-                              child: Text('--:--'),
+                              child: TimePicker(
+                                initialTime:
+                                    const TimeOfDay(hour: 22, minute: 51),
+                                onTimeSelected: (TimeOfDay newTime) {},
+                              ),
                             ),
                           ],
                         ),
