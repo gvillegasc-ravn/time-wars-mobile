@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:timestart/data/data_sources/remote_data_source.dart';
+import 'package:timestart/domain/models/time_entries.dart';
+import 'package:timestart/presentation/ui/time-tracker/time_tracker.dart';
 import 'package:timestart/presentation/ui/time_track_card/time_track_card.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -13,24 +16,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Time Wars',
+      theme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: const MyHomePage(title: 'Time wars'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -39,83 +37,63 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  var _isLoadingTimeEntries = true;
+  var _timeEntries = <TimeEntry>[];
+  TimeEntries? _timeEntriesGeneral;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _loadTimeEntries();
+  }
+
+  Future<void> _loadTimeEntries() async {
+    final remoteDataSourceImpl = RemoteDataSourceImpl(client: http.Client());
+    final timeEntries = await remoteDataSourceImpl.getTimeEntries();
+
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _timeEntries = timeEntries.lastTimeEntries;
+      _timeEntriesGeneral = timeEntries;
+      _isLoadingTimeEntries = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Column(
-          children: [
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            ),
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            ),
-            TimeTrackCard(
-              manyTime: true,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            ),
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
+      body: _isLoadingTimeEntries
+          ? const Center(
+              child: CircularProgressIndicator(),
             )
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          : Column(
+              children: [
+                TimeTracker(
+                  timeEntry: _timeEntriesGeneral?.currentTimeEntry,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(
+                        _timeEntries.length,
+                        (i) => TimeTrackCard(
+                          manyTime: false,
+                          title: _timeEntries[i].description ?? '',
+                          timeSpent: _timeEntries[i].duration,
+                          projectName:
+                              '${_timeEntries[i].clientName} - ${_timeEntries[i].projectName}',
+                          startTime: _timeEntries[i].startTimeRaw,
+                          endTime: _timeEntries[i].endTimeRaw,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

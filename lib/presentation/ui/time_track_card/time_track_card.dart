@@ -20,11 +20,14 @@ class TimeTrackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return manyTime ? _manyTimeEffect(context) : _singleTimeEffect();
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: manyTime ? _manyTimeEffect(context) : _singleTimeEffect(),
+    );
   }
 
   Widget _manyTimeEffect(BuildContext context) {
-    return  SizedBox(
+    return SizedBox(
       width: double.infinity,
       height: 160,
       child: Stack(
@@ -78,7 +81,6 @@ class TimeTrackCard extends StatelessWidget {
   // Efecto cuando manyTime es false
   Widget _singleTimeEffect() {
     return SizedBox(
-      
       width: double.infinity,
       child: TimeCard(
         title: title,
