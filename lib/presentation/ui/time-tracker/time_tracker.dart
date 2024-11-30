@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timestart/domain/models/time_entries.dart';
-import 'package:timestart/presentation/pages/time-tracker/widgets/date_picket.dart';
-import 'package:timestart/presentation/pages/time-tracker/widgets/time_picker.dart';
+import 'package:timestart/presentation/ui/time-tracker/widgets/container_border.dart';
+import 'package:timestart/presentation/ui/time-tracker/widgets/custom_divider.dart';
+import 'package:timestart/presentation/ui/time-tracker/widgets/date_picker.dart';
+import 'package:timestart/presentation/ui/time-tracker/widgets/time_entry_section.dart';
+import 'package:timestart/presentation/ui/time-tracker/widgets/time_picker.dart';
 
 class TimeTracker extends StatefulWidget {
   const TimeTracker({
@@ -47,7 +50,7 @@ class _TimeTrackerState extends State<TimeTracker> {
 
   void _startStopTimer() {
     if (_isRunning) {
-      _showMyDialog();
+      _onPressed();
 
       // setState(() {
       //   _isRunning = !_isRunning;
@@ -83,31 +86,31 @@ class _TimeTrackerState extends State<TimeTracker> {
     }
   }
 
-  Future<void> _showMyDialog() async {
+  Future<void> _onPressed() async {
     return showDialog<void>(
       context: context,
-
-      // barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        List<String> countries = [
-          "Canada",
-          "Russia",
-          "USA",
-          "China",
-          "United Kingdom",
-          "USA",
-          "India"
+        String? clientSelected;
+        List<String> clients = [
+          "Client 1",
+          "Client 2",
+          "Client 3",
         ];
 
+        String? projectSelected;
+        List<String> projects = [
+          "Project 1",
+          "Project 2",
+          "Project 3",
+        ];
+
+        String? workTypeSelected;
         List<String> workTypes = [
           "Refactor",
           "Fix",
           "Feature",
           "Chore",
         ];
-        final seen = Set<String>();
-        List<String> uniquelist =
-            countries.where((country) => seen.add(country)).toList();
 
         return AlertDialog(
           shape: const RoundedRectangleBorder(
@@ -196,17 +199,17 @@ class _TimeTrackerState extends State<TimeTracker> {
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
-                                value: uniquelist[0],
-                                items: uniquelist.map((country) {
+                                value: clientSelected,
+                                items: clients.map((client) {
                                   return DropdownMenuItem(
-                                    child: Text(
-                                      country,
-                                    ),
-                                    value: country,
+                                    value: client,
+                                    child: Text(client),
                                   );
                                 }).toList(),
-                                onChanged: (country) {
-                                  print("You selected: $country");
+                                onChanged: (client) {
+                                  setState(() {
+                                    clientSelected = client;
+                                  });
                                 },
                               ),
                             ),
@@ -229,17 +232,19 @@ class _TimeTrackerState extends State<TimeTracker> {
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
-                                value: uniquelist[0],
-                                items: uniquelist.map((country) {
+                                value: projectSelected,
+                                items: projects.map((project) {
                                   return DropdownMenuItem(
+                                    value: project,
                                     child: Text(
-                                      country,
+                                      project,
                                     ),
-                                    value: country,
                                   );
                                 }).toList(),
-                                onChanged: (country) {
-                                  print("You selected: $country");
+                                onChanged: (project) {
+                                  setState(() {
+                                    projectSelected = project;
+                                  });
                                 },
                               ),
                             ),
@@ -278,17 +283,19 @@ class _TimeTrackerState extends State<TimeTracker> {
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
-                                value: workTypes[0],
+                                value: workTypeSelected,
                                 items: workTypes.map((workType) {
                                   return DropdownMenuItem(
+                                    value: workType,
                                     child: Text(
                                       workType,
                                     ),
-                                    value: workType,
                                   );
                                 }).toList(),
                                 onChanged: (workType) {
-                                  print("You selected: $workType");
+                                  setState(() {
+                                    workTypeSelected = workType;
+                                  });
                                 },
                               ),
                             ),
@@ -419,84 +426,6 @@ class _TimeTrackerState extends State<TimeTracker> {
                 )
               ],
             )),
-      ),
-    );
-  }
-}
-
-class ContainerBorder extends StatelessWidget {
-  const ContainerBorder({
-    super.key,
-    required this.child,
-    this.verticalPadding,
-    this.horizontalPadding,
-  });
-
-  final Widget child;
-  final double? verticalPadding;
-  final double? horizontalPadding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding ?? 5,
-        vertical: verticalPadding ?? 5,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.5),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: child,
-    );
-  }
-}
-
-class CustomDivider extends StatelessWidget {
-  const CustomDivider({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 5),
-        Container(
-          height: 1,
-          width: double.infinity,
-          color: Colors.grey.withOpacity(0.5),
-        ),
-        const SizedBox(height: 5),
-      ],
-    );
-  }
-}
-
-class TimeEntrySection extends StatelessWidget {
-  const TimeEntrySection({
-    super.key,
-    required this.name,
-    required this.child,
-  });
-
-  final String name;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 110,
-            child: Text(name),
-          ),
-          const SizedBox(width: 5),
-          child,
-        ],
       ),
     );
   }

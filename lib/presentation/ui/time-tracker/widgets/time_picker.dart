@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:timestart/presentation/pages/time-tracker/time_tracker.dart';
 
 class TimePicker extends StatefulWidget {
   const TimePicker({
@@ -45,7 +44,7 @@ class _TimePickerState extends State<TimePicker> {
 
     return GestureDetector(
       onTap: () => _selectTime(context),
-      child:  Text(timeText),
+      child: Text(timeText),
     );
   }
 }

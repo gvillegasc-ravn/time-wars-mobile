@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timestart/data/data_sources/remote_data_source.dart';
 import 'package:timestart/domain/models/time_entries.dart';
-import 'package:timestart/presentation/pages/time-tracker/time_tracker.dart';
+import 'package:timestart/presentation/ui/time-tracker/time_tracker.dart';
 import 'package:timestart/presentation/ui/time_track_card/time_track_card.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,12 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Time Wars',
       theme: ThemeData(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: const MyHomePage(title: 'Time wars'),
     );
   }
 }
@@ -87,44 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           endTime: _timeEntries[i].endTimeRaw,
                         ),
                       ),
-                      // children: [
-                      // TimeTrackCard(
-                      //   manyTime: false,
-                      //   title:
-                      //       'Refactor - Add Sizes enum for manage sizes in Component module',
-                      //   timeSpent: '02:53:21',
-                      //   projectName: 'Nelnet - Nelnet',
-                      //   startTime: '07:55',
-                      //   endTime: '18:06',
-                      // ),
-                      // //   TimeTrackCard(
-                      // //     manyTime: false,
-                      // //     title:
-                      // //         'Refactor - Add Sizes enum for manage sizes in Component module',
-                      // //     timeSpent: '02:53:21',
-                      // //     projectName: 'Nelnet - Nelnet',
-                      // //     startTime: '07:55',
-                      // //     endTime: '18:06',
-                      // //   ),
-                      // //   TimeTrackCard(
-                      // //     manyTime: true,
-                      // //     title:
-                      // //         'Refactor - Add Sizes enum for manage sizes in Component module',
-                      // //     timeSpent: '02:53:21',
-                      // //     projectName: 'Nelnet - Nelnet',
-                      // //     startTime: '07:55',
-                      // //     endTime: '18:06',
-                      // //   ),
-                      // //   TimeTrackCard(
-                      // //     manyTime: false,
-                      // //     title:
-                      // //         'Refactor - Add Sizes enum for manage sizes in Component module',
-                      // //     timeSpent: '02:53:21',
-                      // //     projectName: 'Nelnet - Nelnet',
-                      // //     startTime: '07:55',
-                      // //     endTime: '18:06',
-                      // //   )
-                      // // ],
                     ),
                   ),
                 )
