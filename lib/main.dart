@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:timestart/presentation/pages/time-tracker/time_tracker.dart';
 import 'package:timestart/presentation/ui/time_track_card/time_track_card.dart';
 
 void main() {
@@ -14,7 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -69,53 +69,55 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Column(
-          children: [
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
+      body: Column(
+        children: [
+          TimeTracker(),
+          Expanded(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TimeTrackCard(
+                  manyTime: false,
+                  title:
+                      'Refactor - Add Sizes enum for manage sizes in Component module',
+                  timeSpent: '02:53:21',
+                  projectName: 'Nelnet - Nelnet',
+                  startTime: '07:55',
+                  endTime: '18:06',
+                ),
+                TimeTrackCard(
+                  manyTime: false,
+                  title:
+                      'Refactor - Add Sizes enum for manage sizes in Component module',
+                  timeSpent: '02:53:21',
+                  projectName: 'Nelnet - Nelnet',
+                  startTime: '07:55',
+                  endTime: '18:06',
+                ),
+                TimeTrackCard(
+                  manyTime: true,
+                  title:
+                      'Refactor - Add Sizes enum for manage sizes in Component module',
+                  timeSpent: '02:53:21',
+                  projectName: 'Nelnet - Nelnet',
+                  startTime: '07:55',
+                  endTime: '18:06',
+                ),
+                TimeTrackCard(
+                  manyTime: false,
+                  title:
+                      'Refactor - Add Sizes enum for manage sizes in Component module',
+                  timeSpent: '02:53:21',
+                  projectName: 'Nelnet - Nelnet',
+                  startTime: '07:55',
+                  endTime: '18:06',
+                )
+              ],
             ),
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            ),
-            TimeTrackCard(
-              manyTime: true,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            ),
-            TimeTrackCard(
-              manyTime: false,
-              title:
-                  'Refactor - Add Sizes enum for manage sizes in Component module',
-              timeSpent: '02:53:21',
-              projectName: 'Nelnet - Nelnet',
-              startTime: '07:55',
-              endTime: '18:06',
-            )
-          ],
-        ),
+          ))
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

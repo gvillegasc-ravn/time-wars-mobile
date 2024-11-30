@@ -22,10 +22,8 @@ class TimeCard extends StatelessWidget {
       color: Colors.white,
       elevation: 4,
       child: Padding(
-
         padding: const EdgeInsets.all(16.0),
         child: Column(
-
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,7 +38,7 @@ class TimeCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 1, 
+                    maxLines: 1,
                   ),
                 ),
                 Row(

@@ -236,7 +236,8 @@ class _TimeTrackerState extends State<TimeTracker> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: ContainerBorder(
+      child: Card(
+        color: Colors.white,
         child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 15.0,
@@ -249,6 +250,9 @@ class _TimeTrackerState extends State<TimeTracker> {
                   children: [
                     const Text(
                       'What are you working on?',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                     const SizedBox(height: 5),
                     Row(
@@ -262,7 +266,12 @@ class _TimeTrackerState extends State<TimeTracker> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text('No project yet')
+                        const Text(
+                          'No project yet',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        )
                       ],
                     )
                   ],
